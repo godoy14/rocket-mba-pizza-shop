@@ -28,6 +28,7 @@ export function SignIn() {
 
     return (
         <>
+            <title>Login - pizza.shop.rocket</title>
             <div className='p-8'>
 
                 <Button

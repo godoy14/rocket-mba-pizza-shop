@@ -39,6 +39,7 @@ export function SignUp() {
 
     return (
         <>
+            <title>Cadastro - pizza.shop.rocket</title>
             <div className='p-8'>
 
                 <Button
