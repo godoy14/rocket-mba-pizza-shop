@@ -1,11 +1,25 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { OrderStatus } from '@/components/order-status'
 import { ArrowRight, Search, X } from "lucide-react";
 import { OrderDetails } from "./order.details";
 
+import { formatDistanceToNow } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
 
-export function OrderTableRow() {
+
+interface OrderTableRowProps {
+    order: {
+        orderId: string
+        createdAt: string
+        status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+        customerName: string
+        total: number
+    }
+}
+
+export function OrderTableRow({ order }: OrderTableRowProps) {
     return (
 
         <TableRow>
@@ -21,24 +35,23 @@ export function OrderTableRow() {
                 </Dialog>
             </TableCell>
             <TableCell className="font-mono text-xs font-medium">
-                123456789
+                {order.orderId}
             </TableCell>
             <TableCell className="text-muted-foreground">
-                há 15 minutos
+                {formatDistanceToNow(order.createdAt, {
+                    locale: ptBR,
+                    addSuffix: true,
+                })}
             </TableCell>
             <TableCell>
-                <div className="flex items-center gap-2">
-                    <span className="h-2 w-2 rounded-full bg-slate-400" />
-                    <span className="font-medium text-muted-foreground">
-                        Pendente
-                    </span>
-                </div>
+                <OrderStatus status={order.status} />
             </TableCell>
+            <TableCell className="font-medium">{order.customerName}</TableCell>
             <TableCell className="font-medium">
-                João Godoy
-            </TableCell>
-            <TableCell className="font-medium">
-                R$ 150,50
+                {order.total.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })}
             </TableCell>
             <TableCell>
                 <Button variant="outline" size="sm">
